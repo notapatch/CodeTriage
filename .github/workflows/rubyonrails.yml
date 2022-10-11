@@ -31,30 +31,14 @@ jobs:
       - name: Install Ruby and gems
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.6'
+          ruby-version: '2.7'
       - name: Setup Node
         uses: actions/setup-node@v3
         if: hashFiles('yarn.lock') != ''
         with:
-          cache: "yarn"
+          node-version: '14'
+          cache: 'yarn'
       - name: Set up database schema
         run: bin/rails db:schema:load
       - name: Run tests
         run: bin/rake
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Install Ruby and gems
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.6'
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        if: hashFiles('yarn.lock') != ''
-        with:
-          cache: "yarn"
-      - name: Lint Ruby files
-        run: bin/rubocop --parallel
