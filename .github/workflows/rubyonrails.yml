@@ -29,9 +29,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install Ruby and gems
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
+          bundler-cache: true
       - name: Setup Node
         uses: actions/setup-node@v3
         if: hashFiles('yarn.lock') != ''
@@ -39,6 +40,6 @@ jobs:
           node-version: '14'
           cache: 'yarn'
       - name: Set up database schema
-        run: bin/rails db:schema:load
+        run: bundle exec rake db:schema:load
       - name: Run tests
         run: bin/rake
